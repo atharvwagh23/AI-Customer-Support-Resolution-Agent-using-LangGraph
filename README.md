@@ -209,6 +209,8 @@ python main.py
 
 ## 💻 Example Run
 
+**Input:** `My headphones arrived broken.`
+
 ```
 ========================================
        AI CUSTOMER SUPPORT AGENT
@@ -225,7 +227,8 @@ UNDERSTANDING CUSTOMER QUERY
 Customer Issue: Headphones arrived broken.
 Product/Order Context: Headphones (order details not provided)
 Intent: Unclear
-Missing Information: Order number, purchase date, desired resolution
+Important Details: Product: headphones; Condition: broken
+Missing Information: Order number, purchase date, quantity, colour, desired resolution (replacement/refund)
 
 ========================================
 CLASSIFICATION
@@ -241,9 +244,7 @@ MEDIUM
 GENERATING RESPONSE
 ========================================
 
-Sorry to hear your headphones arrived broken. Could you please provide
-your order number and a photo showing the damage? Once we have that, our
-team will review the information and determine the appropriate resolution.
+Sorry to hear your headphones arrived broken. Could you please provide your order number and a photo showing the damage? Once we have that, our team will review the information and determine the appropriate resolution.
 
 ========================================
 REVIEW
@@ -252,12 +253,24 @@ REVIEW
 Approved:
 True
 
+Feedback:
+Approved: the reply accurately, completely, politely, safely, and concisely addresses the damaged product issue.
+
 ========================================
 FINAL RESPONSE
 ========================================
 
-Sorry to hear your headphones arrived broken. ...
+Sorry to hear your headphones arrived broken. Could you please provide your order number and a photo showing the damage? Once we have that, our team will review the information and determine the appropriate resolution.
 ```
+
+**What happened in this run:**
+
+| Step | Result |
+|------|--------|
+| Understand | Found the issue and listed the missing details without inventing any |
+| Classify | `DAMAGED_PRODUCT`, `MEDIUM` |
+| Response | Asked for the order number and a photo, with no promises |
+| Review | Approved on the first pass, so the router went straight to **Final** |
 
 ---
 
@@ -293,24 +306,35 @@ This exercised the full `Review → Fix → Review → Final` path and the condi
 
 ## 💾 Output Files
 
-Every run saves:
+Every run saves two files in the `output/` folder.
 
-- `output/final_response.txt`: the final reply text
-- `output/execution_result.json`: the complete final state
+### 📄 `output/final_response.txt`
+
+The final reply, ready for a support representative to review:
+
+```
+Sorry to hear your headphones arrived broken. Could you please provide your order number and a photo showing the damage? Once we have that, our team will review the information and determine the appropriate resolution.
+```
+
+### 🧾 `output/execution_result.json`
+
+The complete final state of the graph, showing every field the nodes filled in:
 
 ```json
 {
     "customer_query": "My headphones arrived broken.",
     "category": "DAMAGED_PRODUCT",
     "priority": "MEDIUM",
-    "issue_summary": "...",
-    "generated_response": "...",
-    "review_feedback": "...",
+    "issue_summary": "Customer Issue: Headphones arrived broken.\nProduct/Order Context: Headphones (order details not provided)\nIntent: Unclear\nImportant Details: Product: headphones; Condition: broken\nMissing Information: Order number, purchase date, quantity, colour, desired resolution (replacement/refund)",
+    "generated_response": "Sorry to hear your headphones arrived broken. Could you please provide your order number and a photo showing the damage? Once we have that, our team will review the information and determine the appropriate resolution.",
+    "review_feedback": "Approved: the reply accurately, completely, politely, safely, and concisely addresses the damaged product issue.",
     "approved": true,
-    "final_response": "...",
+    "final_response": "Sorry to hear your headphones arrived broken. Could you please provide your order number and a photo showing the damage? Once we have that, our team will review the information and determine the appropriate resolution.",
     "iteration_count": 0
 }
 ```
+
+> 💡 `iteration_count` is `0` because the reviewer approved the first draft, so the Fix node never ran. When the loop runs, this number goes up to 1 or 2.
 
 ---
 
@@ -339,18 +363,8 @@ Every run saves:
 
 ---
 
-## 🔮 Future Improvements
-
-- Look up real order data through tools (order status, tracking)
-- Add a human-in-the-loop approval step before finalizing
-- Add automated tests for the router and each node
-- Build a web UI (Streamlit or FastAPI) for support agents
-- Add conversation memory for multi-turn support
-
----
-
 <div align="center">
 
-Built for practice with ❤️ using **LangGraph**
+Built for practice with using **LangGraph**
 
 </div>

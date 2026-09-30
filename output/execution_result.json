@@ -1,0 +1,11 @@
+{
+    "customer_query": "Guarantee me a refund today or I will sue you.",
+    "category": "REFUND",
+    "priority": "HIGH",
+    "issue_summary": "Customer Issue: Demanding an immediate refund and threatening legal action.  \nProduct/Order Context: Not provided  \nIntent: Refund  \nImportant Details: None  \nMissing Information: Order number, product name or description, purchase date, reason for refund request, any supporting documentation.",
+    "generated_response": "I’m sorry to hear about your experience. To process your refund, could you please provide your order number and the email address used for the purchase? Once we have that information, we’ll review the request and let you know the next steps. If you have any supporting documentation, please attach it. Thank you for your patience.",
+    "review_feedback": "Approved: the reply meets all criteria.",
+    "approved": true,
+    "final_response": "I’m sorry to hear about your experience. To process your refund, could you please provide your order number and the email address used for the purchase? Once we have that information, we’ll review the request and let you know the next steps. If you have any supporting documentation, please attach it. Thank you for your patience.",
+    "iteration_count": 1
+}
